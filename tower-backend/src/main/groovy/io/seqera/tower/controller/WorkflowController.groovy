@@ -91,6 +91,7 @@ class WorkflowController extends BaseController {
     }
     @Get("/list")
     @Transactional
+    @Secured(SecurityRule.IS_ANONYMOUS)
     HttpResponse<ListWorkflowResponse> list( HttpParameters filterParams) {
         Long max = filterParams.getFirst('max', Long.class, 50l)
         Long offset = filterParams.getFirst('offset', Long.class, 0l)
@@ -134,19 +135,20 @@ class WorkflowController extends BaseController {
      */
     @Get("/{workflowId}")
     @Transactional(readOnly = true)
-    HttpResponse<GetWorkflowResponse> get(String workflowId, Authentication authentication) {
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    HttpResponse<GetWorkflowResponse> get(String workflowId) {
         final workflow = workflowService.get(workflowId)
-        if (!workflow)
-            return HttpResponse.notFound(GetWorkflowResponse.error("Unknown workflow ID: $workflowId"))
-        final user = userService.getByAuth(authentication)
-        if( !user ) {
-            log.error "Unknown user=${authentication.name}"
-            return HttpResponse.badRequest(GetWorkflowResponse.error("Invalid user authenticaton: $authentication.name"))
-        }
-        if( workflow.owner.id != user.id ) {
-            log.warn "Workflow ID=$workflowId does not belong to user=$authentication.name"
-            return HttpResponse.badRequest(GetWorkflowResponse.error("Invalid workflow request: $workflowId"))
-        }
+//        if (!workflow)
+//            return HttpResponse.notFound(GetWorkflowResponse.error("Unknown workflow ID: $workflowId"))
+//        final user = userService.getByAuth(authentication)
+//        if( !user ) {
+//            log.error "Unknown user=${authentication.name}"
+//            return HttpResponse.badRequest(GetWorkflowResponse.error("Invalid user authenticaton: $authentication.name"))
+//        }
+//        if( workflow.owner.id != user.id ) {
+//            log.warn "Workflow ID=$workflowId does not belong to user=$authentication.name"
+//            return HttpResponse.badRequest(GetWorkflowResponse.error("Invalid workflow request: $workflowId"))
+//        }
 
         final resp = new GetWorkflowResponse(workflow: workflow)
         // fetch progress
@@ -154,6 +156,35 @@ class WorkflowController extends BaseController {
 
         HttpResponse.ok(resp)
     }
+    /**
+     * Endpoint invoked by the client to fetch workflow status
+     *
+     * @param workflowId The ID of the workflow for which the status is requested
+     * @return The http response
+     */
+//    @Get("/{workflowId}")
+//    @Transactional(readOnly = true)
+//    @Secured(SecurityRule.IS_ANONYMOUS)
+//    HttpResponse<GetWorkflowResponse> get(String workflowId,  Authentication authentication) {
+//        final workflow = workflowService.get(workflowId)
+//        if (!workflow)
+//            return HttpResponse.notFound(GetWorkflowResponse.error("Unknown workflow ID: $workflowId"))
+//        final user = userService.getByAuth(authentication)
+//        if( !user ) {
+//            log.error "Unknown user=${authentication.name}"
+//            return HttpResponse.badRequest(GetWorkflowResponse.error("Invalid user authenticaton: $authentication.name"))
+//        }
+//        if( workflow.owner.id != user.id ) {
+//            log.warn "Workflow ID=$workflowId does not belong to user=$authentication.name"
+//            return HttpResponse.badRequest(GetWorkflowResponse.error("Invalid workflow request: $workflowId"))
+//        }
+//
+//        final resp = new GetWorkflowResponse(workflow: workflow)
+//        // fetch progress
+//        resp.progress = getProgressData(workflow)
+//
+//        HttpResponse.ok(resp)
+//    }
 
     /**
      * Endpoint invoked by the client to fetch workflow progress data

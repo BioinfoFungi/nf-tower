@@ -20,7 +20,7 @@ declare let $: any;
   styleUrls: ['./workflow-status-icon.component.scss']
 })
 export class WorkflowStatusIconComponent implements OnInit, AfterViewInit {
-
+  debugger
   @Input()
   workflow: Workflow;
 

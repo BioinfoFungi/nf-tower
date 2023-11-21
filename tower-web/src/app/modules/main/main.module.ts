@@ -12,6 +12,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { HashLocationStrategy ,LocationStrategy} from '@angular/common';
 import { MainComponent } from './main.component';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
@@ -73,6 +74,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class MainRoutingModule { }
 
@@ -121,9 +123,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
   ],
   providers: [
     AppConfigService,
-    { provide: APP_INITIALIZER, useFactory: appInitializerFn, multi: true, deps: [AppConfigService] },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    // { provide: APP_INITIALIZER, useFactory: appInitializerFn, multi: true, deps: [AppConfigService] },
+    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [MainComponent]
 })

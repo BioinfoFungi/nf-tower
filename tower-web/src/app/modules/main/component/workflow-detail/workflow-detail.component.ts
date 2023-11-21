@@ -25,7 +25,7 @@ import {LiveUpdate} from "../../entity/live/live-update";
   styleUrls: ['./workflow-detail.component.scss']
 })
 export class WorkflowDetailComponent implements OnInit, OnDestroy {
-
+  
   workflow: Workflow;
   private workflowEventsSubscription: Subscription;
 
@@ -36,6 +36,7 @@ export class WorkflowDetailComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit() {
+    // debugger
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.unsubscribeFromWorkflowLiveEvents();
       const workflowId: string = params.get('id');

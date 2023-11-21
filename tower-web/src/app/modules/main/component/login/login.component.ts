@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.loginPath = this.appConfigService.getConfig().loginPath;
     this.showGitHubLogin = this.appConfigService.getConfig().authTypes.indexOf('github')>-1;
     this.showOpenidLogin = this.appConfigService.getConfig().authTypes.indexOf('oidc')>-1;
-    this.showDefaultLogin = this.loginPath === '/login' || this.loginPath == null;
+    this.showDefaultLogin = this.loginPath === '#/login' || this.loginPath == null;
   }
 
   ngAfterViewInit() {
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(
           (data) => {
             this.state = data.state;
-            this.token =   "/auth?uid="+data.user.uid+"&token="+data.user.authToken;
+            this.token =   "#/auth?uid="+data.user.uid+"&token="+data.user.authToken;
             console.log(this.token)
             // http://localhost:8000/auth?uid=vN8KBbqR&token=d75be1d5e20ea90a7365f083f0171d9a68cde7e9
 

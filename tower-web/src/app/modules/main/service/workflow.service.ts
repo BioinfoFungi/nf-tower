@@ -25,6 +25,7 @@ const endpointUrl = `${environment.apiUrl}/workflow`;
   providedIn: 'root'
 })
 export class WorkflowService {
+  debugger
   progressChangeEvent: EventEmitter<Workflow> = new EventEmitter();
 
   private workflowsByIdCache: Map<string | number, Workflow>;

@@ -16,7 +16,7 @@ import {User} from "../entity/user/user";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-
+  
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

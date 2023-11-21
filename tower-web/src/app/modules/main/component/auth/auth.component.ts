@@ -23,7 +23,7 @@ import {delay} from "rxjs/operators";
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit, AfterViewInit {
-
+  
   @ViewChild('authForm', {static: true})
   authForm;
 
@@ -38,6 +38,7 @@ export class AuthComponent implements OnInit, AfterViewInit {
               private notificationService: NotificationService) { }
 
   ngOnInit() {
+    // debugger
     const queryParams: ParamMap = this.route.snapshot.queryParamMap;
     const success = queryParams.get('success');
     this.loginPath = this.authService.authEndpointUrl;
@@ -80,6 +81,7 @@ export class AuthComponent implements OnInit, AfterViewInit {
   }
 
   private submitAuthForm(): void {
+    debugger
     this.authForm.nativeElement.submit();
   }
 

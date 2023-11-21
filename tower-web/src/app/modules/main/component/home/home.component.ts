@@ -29,7 +29,7 @@ import {LiveUpdate} from "../../entity/live/live-update";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+  
   user: User;
   workflows: Workflow[];
   private userEventsSubscription: Subscription;
@@ -51,13 +51,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    // debugger
     this.version = environment.version;
     this.commitId = environment.commitId;
 
     this.authService.user$.subscribe(
       (user: User) => {
         this.user = user;
-        if (this.user) {
+        if (!this.user) {
           console.log('Watching for workflow events for ',this.user);
           this.workflowService.workflows$.subscribe((workflows: Workflow[]) => {
             this.receiveWorkflows(workflows);
