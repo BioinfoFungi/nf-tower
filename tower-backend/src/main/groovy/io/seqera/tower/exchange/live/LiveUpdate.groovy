@@ -42,7 +42,9 @@ class LiveUpdate implements BaseResponse, Serializable {
     static LiveUpdate of(Long userId, String workflowId, LiveAction action=null) {
         new LiveUpdate(userId, workflowId, action)
     }
-
+    static LiveUpdate of(String workflowId, LiveAction action=null) {
+        new LiveUpdate(1, workflowId, action)
+    }
     static LiveUpdate ofError(String errorMessage) {
         new LiveUpdate(errorMessage)
     }

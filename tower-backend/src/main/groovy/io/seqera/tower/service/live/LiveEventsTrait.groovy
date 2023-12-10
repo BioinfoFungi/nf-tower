@@ -33,10 +33,10 @@ trait LiveEventsTrait {
     }
 
     void publishWorkflowEvent(Workflow workflow) {
-//        publishEvent(LiveUpdate.of(workflow.owner.id, workflow.id, LiveAction.WORKFLOW_UPDATE))
+        publishEvent(LiveUpdate.of( workflow.id, LiveAction.WORKFLOW_UPDATE))
     }
 
     void publishProgressEvent(Workflow workflow) {
-//        publishEvent(LiveUpdate.of(workflow.owner.id, workflow.id, LiveAction.PROGRESS_UPDATE))
+        publishEvent(LiveUpdate.of( workflow.id, LiveAction.PROGRESS_UPDATE))
     }
 }
