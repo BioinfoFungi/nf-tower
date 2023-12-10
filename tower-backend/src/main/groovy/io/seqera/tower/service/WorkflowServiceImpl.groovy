@@ -152,15 +152,15 @@ class WorkflowServiceImpl implements WorkflowService {
     private Workflow saveNewWorkflow(Workflow workflow, User owner) {
         // configure missing fields
         workflow.submit = workflow.start
-        workflow.owner = owner
+//        workflow.owner = new User()
         workflow.status = WorkflowStatus.RUNNING
         // invoke validation explicitly due to gorm bug
         // https://github.com/grails/gorm-hibernate5/issues/110
-        if (workflow.validate()) {
+//        if (workflow.validate()) {
             workflow.save(flush:true)
-        }
-        else
-            throw new ValidationException("Invalid workflow object: ${workflow.errors}")
+//        }
+//        else
+//            throw new ValidationException("Invalid workflow object: ${workflow.errors}")
 
         return workflow
     }
@@ -182,8 +182,8 @@ class WorkflowServiceImpl implements WorkflowService {
             final Workflow workflow = get(request.workflow.id)
             if( !workflow )
                 throw new IllegalStateException("Unable to find launch workflow id=$request.workflow.id")
-            if( workflow.owner.id != user.id )
-                throw new IllegalStateException("Illegal workflow owner user -- current id=${workflow.owner.id}; expected id=$user.id")
+//            if( workflow.owner.id != user.id )
+//                throw new IllegalStateException("Illegal workflow owner user -- current id=${workflow.owner.id}; expected id=$user.id")
             // TODO: check the status is SUBMITTED
 
             workflow.start = OffsetDateTime.now()

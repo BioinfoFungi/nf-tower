@@ -33,7 +33,7 @@ class Workflow {
 
     String id
     static hasMany = [tasks: Task]
-    static belongsTo = [owner: User]
+//    static belongsTo = [owner: User]
 
     OffsetDateTime submit
     OffsetDateTime start //TODO For now, submitTime and startTime are the same, when using Launchpad they would differ.

@@ -234,10 +234,10 @@ class AuditEventPublisher {
             return
         }
 
-        if( workflow.owner.notification ) {
-            final mail = buildCompletionEmail(workflow)
-            mailService.sendMail(mail)
-        }
+//        if( workflow.owner.notification ) {
+//            final mail = buildCompletionEmail(workflow)
+//            mailService.sendMail(mail)
+//        }
     }
 
     /**
@@ -256,7 +256,7 @@ class AuditEventPublisher {
         binding.put('server_url', serverUrl)
 
         Mail mail = new Mail()
-        mail.to(workflow.owner.email)
+//        mail.to(workflow.owner.email)
         mail.subject("Workflow completion [${workflow.runName}] - ${workflow.success ? 'SUCCEED' : 'FAILED'}!")
         mail.text(getTemplateFile('/io/seqera/tower/service/workflow-notification.txt', binding))
         mail.body(getTemplateFile('/io/seqera/tower/service/workflow-notification.html', binding))

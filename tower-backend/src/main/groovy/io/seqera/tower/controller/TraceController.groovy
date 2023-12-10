@@ -11,6 +11,9 @@
 
 package io.seqera.tower.controller
 
+import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.parameters.RequestBody
+
 import javax.inject.Inject
 
 import grails.gorm.transactions.Transactional
@@ -54,7 +57,8 @@ import io.seqera.tower.service.live.LiveEventsService
  */
 @Slf4j
 @CompileStatic
-@Secured(['ROLE_USER'])
+//@Secured(['ROLE_USER'])
+@Secured(SecurityRule.IS_ANONYMOUS)
 @Controller("/trace")
 class TraceController extends BaseController {
 
@@ -142,11 +146,14 @@ class TraceController extends BaseController {
     }
 
 
-    // --== new api ==--
+
+
+
 
     @Post("/create")
-    HttpResponse<TraceCreateResponse> flowCreate(TraceCreateRequest req, Authentication authentication) {
-        log.info "> Trace create request [user=${authentication.getName()}]"
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    HttpResponse<TraceCreateResponse> flowCreate(TraceCreateRequest req) {
+//        log.info "> Trace create request [user=${authentication.getName()}]"
         // note: when the execution is launched from Tower the workflowId is already given
         // and the a workflow entity should exists
         def workflowId=req.workflowId;
@@ -162,7 +169,7 @@ class TraceController extends BaseController {
 //        final workflowId = req.workflowId ?: workflowService.createWorkflowKey()
 
         final resp = new TraceCreateResponse(workflowId: workflowId)
-        log.info "> Created new workflow id=${workflowId} [user=${authentication.getName()}]${req.workflowId ? ' [from tower]' :''}"
+//        log.info "> Created new workflow id=${workflowId} [user=${authentication.getName()}]${req.workflowId ? ' [from tower]' :''}"
         HttpResponse.ok(resp)
     }
 
@@ -172,12 +179,12 @@ class TraceController extends BaseController {
 
     @Put("/{workflowId}/begin")
     @Transactional
-    HttpResponse<TraceBeginResponse> flowBegin(final String workflowId, @Body TraceBeginRequest req, Authentication authentication) {
+    HttpResponse<TraceBeginResponse> flowBegin(final String workflowId, @Body TraceBeginRequest req) {
         try {
-            log.info( "> Receiving trace for workflow begin [workflowId=${workflowId}; user=${authentication.name}]")
+//            log.info( "> Receiving trace for workflow begin [workflowId=${workflowId}; user=${authentication.name}]")
 
-            final user = userService.getByAuth(authentication)
-            final workflow = traceService.handleFlowBegin(req, user)
+//            final user = userService.getByAuth(authentication)
+            final workflow = traceService.handleFlowBegin(req, null)
 
             final resp = new TraceBeginResponse(
                             status: TraceProcessingStatus.OK,
@@ -194,12 +201,12 @@ class TraceController extends BaseController {
 
     @Put("/{workflowId}/complete")
     @Transactional
-    HttpResponse<TraceCompleteResponse> flowComplete(final String workflowId, @Body TraceCompleteRequest req, Authentication authentication) {
+    HttpResponse<TraceCompleteResponse> flowComplete(final String workflowId, @Body TraceCompleteRequest req) {
         try {
-            log.info("> Receiving trace for workflow completion [workflowId=${workflowId}; user=${authentication.name}]")
+//            log.info("> Receiving trace for workflow completion [workflowId=${workflowId}; user=${authentication.name}]")
 
-            final user = userService.getByAuth(authentication)
-            final workflow = traceService.handleFlowComplete(req, user)
+//            final user = userService.getByAuth(authentication)
+            final workflow = traceService.handleFlowComplete(req, null)
 
             final resp = new TraceCompleteResponse(
                                 status: TraceProcessingStatus.OK,
@@ -216,8 +223,8 @@ class TraceController extends BaseController {
 
     @Put("/{workflowId}/progress")
     @Transactional
-    HttpResponse<TraceProgressResponse> record(String workflowId, @Body TraceProgressRequest req, Authentication authentication) {
-        log.info "> Receiving trace tasks progress [workflowId=${workflowId}; tasks=${req.tasks?.size()}; user=${authentication.name}]"
+    HttpResponse<TraceProgressResponse> record(String workflowId, @Body TraceProgressRequest req) {
+//        log.info "> Receiving trace tasks progress [workflowId=${workflowId}; tasks=${req.tasks?.size()}; user=${authentication.name}]"
 
         HttpResponse<TraceProgressResponse> response
         if( req.tasks?.size()>100 ) {
@@ -249,5 +256,31 @@ class TraceController extends BaseController {
         log.debug "> Receiving trace heartbeat [workflowId=${workflowId}]"
         traceService.handleHeartbeat(workflowId, req.progress)
         HttpResponse.ok(new TraceHeartbeatResponse(message: 'OK'))
+    }
+
+
+    // --== new api ==--
+    @Post("/weblog")
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    HttpResponse<String> weblog(@RequestBody Object requestObject) {
+//        printf arg
+//        log.info "> Trace create request [user=${authentication.getName()}]"
+//        // note: when the execution is launched from Tower the workflowId is already given
+//        // and the a workflow entity should exists
+//        def workflowId=req.workflowId;
+//        if( !req.workflowId  ){
+//            log.info("创建workflow{}",req.workflowId)
+//            workflowId= workflowService.createWorkflowKey()
+//        }
+////        else {
+////            workflowId= req.workflowId
+////        }
+//////            return HttpResponse.badRequest(new TraceCreateResponse(message: "Unknown workflow launch id=$req.workflowId"))
+//
+////        final workflowId = req.workflowId ?: workflowService.createWorkflowKey()
+//
+//        final resp = new TraceCreateResponse(workflowId: workflowId)
+//        log.info "> Created new workflow id=${workflowId} [user=${authentication.getName()}]${req.workflowId ? ' [from tower]' :''}"
+        HttpResponse.ok("")
     }
 }

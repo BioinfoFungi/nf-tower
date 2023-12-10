@@ -238,8 +238,8 @@ class WorkflowController extends BaseController {
         final task = taskService.findByWorkflowAndTaskId(workflowId, taskId)
         if( !task )
             return HttpResponse.badRequest(TaskGet.error("Oops .. Unable to find task with Id=$taskId"))
-        if( task.workflow.owner.id != user.id )
-            return HttpResponse.badRequest(TaskGet.error("Oops .. User is not the owner of requested task"))
+//        if( task.workflow.owner.id != user.id )
+//            return HttpResponse.badRequest(TaskGet.error("Oops .. User is not the owner of requested task"))
 
         HttpResponse.ok(TaskGet.of(task))
     }
